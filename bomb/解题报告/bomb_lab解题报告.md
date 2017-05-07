@@ -4,23 +4,23 @@
 
 1. 应该输入一个字符串，可以知道字符串长度为6；rbx是这个字符串所在位置；
 
-![1](E:\Coding\CSAPP\lab2\datalab-handout\解题报告\1.png)
+![image](https://github.com/LucienXian/CSAPP/blob/master/bomb/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/1.png)
 
 2. 从最下面可以知道，这一段是循环，循环六次跳出；从+41开始，首先是rbx+rax所指向的值赋予给ecx，ecx的低八位赋给rsp的所指向的地址，然后再赋值给rdx，然后将这个值的低八位再赋值给rsp+rax+16;<br>
 
    总结一下，由于rbx存着输入字符串的地址，eax贡献了从0~5的偏移，也就是把输入字符串的六个字符分别赋值给rdx，然后通过与0xf与操作，取出低4位，这个值作为偏移量取0x4024b0后某个变量的值，将这个变量的低八位放到rsp+rax+16上，也就是循环结束时，rsp+16 ～ rsp+21 这6个字节上存储着从0x4024b0开始的一段地址内搬运来的6个变量。
 
-![2](E:\Coding\CSAPP\lab2\datalab-handout\解题报告\2.png)
+![image](https://github.com/LucienXian/CSAPP/blob/master/bomb/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/2.png)
 
 3. 紧接着是比较新的字符串和0x40245e内的字符串是否相等，如果相等，则返回0，成功跳出函数
 
-![3](E:\Coding\CSAPP\lab2\datalab-handout\解题报告\3.png)
+![image](https://github.com/LucienXian/CSAPP/blob/master/bomb/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/3.png)
 
 4. 查看0x4024b0和0x40245e的值，计算偏移量为9 15 14 5 6 7，对应的二进制1001 1111 1100 0101 0110 0111<br>
 
    然后查看ascii码表，找出对应的低四位为上面哪几个字符就好，例如9FC567
 
-![4](E:\Coding\CSAPP\lab2\datalab-handout\解题报告\4.png)
+![image](https://github.com/LucienXian/CSAPP/blob/master/bomb/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/4.png)
 
 ## phase6
 
@@ -30,7 +30,7 @@
 
 首先：
 
-![p6_1](E:\Coding\CSAPP\lab2\datalab-handout\解题报告\p6_1.png)
+![image](https://github.com/LucienXian/CSAPP/blob/master/bomb/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/p6_1.png)g)
 
 第一部分，函数（read_six_numbers）将输入两个数字存在**rsp**连续的24个字节中；然后将rsp存在r14中，r12被赋值0；r13所指的值是第一个输入数<br>
 
@@ -41,14 +41,13 @@
 
 
 第二部分：
-
-![p6_2](E:\Coding\CSAPP\lab2\datalab-handout\解题报告\p6_2.png))
+![image](https://github.com/LucienXian/CSAPP/blob/master/bomb/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/p6_2.png)
 
 就是把输入的六个数变为7-num，例如1，2，3，4，5，6变为6，5，4，3，2，1
 
 第三部分：
 
-![p7_2](E:\Coding\CSAPP\lab2\datalab-handout\解题报告\p7_2.png)
+![image](https://github.com/LucienXian/CSAPP/blob/master/bomb/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/p7_2.png)
 
 这一部分是参考上述链接的：
 
@@ -58,17 +57,17 @@
 
 这时可以查看0x6032d0及其后面连续的地址存着什么：
 
-![num](E:\Coding\CSAPP\lab2\datalab-handout\解题报告\num.png)
+![image](https://github.com/LucienXian/CSAPP/blob/master/bomb/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/num.png)
 
 例如我们输入的1，2，3，4，5，6，7-num之后，链表顺序变为node6，node5，node4，node3，node2，node1
 
 第四部分是将其连起来：
 
-![p6_3](E:\Coding\CSAPP\lab2\datalab-handout\解题报告\p6_3.png)
+![image](https://github.com/LucienXian/CSAPP/blob/master/bomb/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/p6_3.png)
 
 第五部分：
 
-![p6_4](E:\Coding\CSAPP\lab2\datalab-handout\解题报告\p6_4.png)
+![image](https://github.com/LucienXian/CSAPP/blob/master/bomb/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/p6_4.png)
 
 这首先把eax赋值成rbx+8的值（rbx在上一个循环中等于rsp+32，第一个节点的地址），然后将eax与rbx所指的结点比较，这里是一个循环，循环五次，依次将前一个结点与后一个比较，要求前面的更大；<br>
 
